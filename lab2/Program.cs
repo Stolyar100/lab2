@@ -153,6 +153,7 @@ namespace lab2
             
         }
     }
+    
     internal class Program
     {
         public static void setHalfDayModeCase(Clock myClock) {
