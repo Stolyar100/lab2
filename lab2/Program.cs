@@ -4,6 +4,7 @@ namespace lab2
 {
     public class Clock
     {
+        private string name;
         private bool isPowerEnabled;
         private bool isHalfDayEnabled;
         private int[] currentTime = new int[2];
@@ -11,8 +12,9 @@ namespace lab2
         private int[] alarmTime = new int[2];
 
 
-        public Clock()
+        public Clock(string clockName)
         {
+            name = clockName;
             isPowerEnabled = true;
             isHalfDayEnabled = false;
             currentTime[0] = DateTime.Now.Hour;
@@ -20,6 +22,58 @@ namespace lab2
             isAlarmEnabled = true;
             alarmTime[0] = currentTime[0];
             alarmTime[1] = currentTime[1] + 1;
+        }
+        
+        public Clock(string clockName, int hours, int minutes)
+        {
+            name = clockName;
+            isPowerEnabled = true;
+            isHalfDayEnabled = false;
+            currentTime[0] = hours;
+            currentTime[1] = minutes;
+            isAlarmEnabled = false;
+            
+        }
+        
+        public Clock(string clockName, int hours, int minutes, int alarmHours, int alarmMinutes)
+        {
+            name = clockName;
+            isPowerEnabled = true;
+            isHalfDayEnabled = false;
+            currentTime[0] = hours;
+            currentTime[1] = minutes;
+            isAlarmEnabled = true;
+            alarmTime[0] = alarmHours;
+            alarmTime[1] = alarmMinutes;
+
+        }
+        
+        public Clock(string clockName, int hours, int minutes, bool isAfternoon)
+        {
+            name = clockName;
+            isPowerEnabled = true;
+            isHalfDayEnabled = true;
+            currentTime[0] = hours;
+            currentTime[1] = minutes;
+            isAlarmEnabled = false;
+            setHalfTime(hours, minutes, isAfternoon);
+        }
+        
+        public Clock(string clockName, int hours, int minutes, bool isAfternoon, int alarmHours, int alarmMinutes, bool alarmIsAfternoon)
+        {
+            name = clockName;
+            isPowerEnabled = true;
+            isHalfDayEnabled = true;
+            currentTime[0] = hours;
+            currentTime[1] = minutes;
+            isAlarmEnabled = true;
+            setHalfTime(hours, minutes, isAfternoon);
+            setHalfAlarm(alarmHours, alarmMinutes, alarmIsAfternoon);
+        }
+
+        public string Name
+        {
+            get => name;
         }
 
         public bool IsHalfDayEnabled
@@ -33,7 +87,7 @@ namespace lab2
 
         public void statusInfo()
         {
-            
+            Console.WriteLine($"Name: {name};");
             if (isPowerEnabled)
             {
                 Console.WriteLine("Power: Enabled;");
@@ -287,15 +341,18 @@ namespace lab2
             bool condition = true;
             while (condition)
             {
-                Console.WriteLine("A congratulations! It`s main menu, enter: {0} " +
-                                  "0 - to see clock status {0}" +
-                                  "1 - to refresh time {0}" +
-                                  "2 - to set half day mode {0}" +
-                                  "3 - to set power status {0}" +
-                                  "4 - to set time {0}" +
-                                  "5 - to set alarm status {0}" +
-                                  "6 - to set alarm time {0}" +
-                                  "7 - cancel{0}", Environment.NewLine);
+                Console.WriteLine("A congratulations! It`s main menu, enter: {0}" +
+                                  "0 - to see clock object list {0}" +
+                                  "1 - to create new clock {0}" +
+                                  "2 - to delete clock {0}" +
+                                  "3 - to see clock status {0}" +
+                                  "4 - to refresh time {0}" +
+                                  "5 - to set half day mode {0}" +
+                                  "6 - to set power status {0}" +
+                                  "7 - to set time {0}" +
+                                  "8 - to set alarm status {0}" +
+                                  "9 - to set alarm time {0}" +
+                                  "10 - cancel{0}", Environment.NewLine);
                 int item_id = Int32.Parse(Console.ReadLine());
 
                 switch (item_id)
@@ -304,24 +361,33 @@ namespace lab2
                         myClock.statusInfo();
                         break;
                     case 1:
-                        myClock.refreshTime();
+                        myClock.statusInfo();
                         break;
                     case 2:
-                        setHalfDayModeCase(myClock);
+                        myClock.statusInfo();
                         break;
                     case 3:
-                        setPowerStatusCase(myClock);
+                        myClock.statusInfo();
                         break;
                     case 4:
-                        setTimeCase(myClock);
+                        myClock.refreshTime();
                         break;
                     case 5:
-                        setAlarmStatusCase(myClock);
+                        setHalfDayModeCase(myClock);
                         break;
                     case 6:
-                        setAlarmStatusCase(myClock);
+                        setPowerStatusCase(myClock);
                         break;
                     case 7:
+                        setTimeCase(myClock);
+                        break;
+                    case 8:
+                        setAlarmStatusCase(myClock);
+                        break;
+                    case 9:
+                        setAlarmStatusCase(myClock);
+                        break;
+                    case 10:
                         condition = false;
                         break;
 
