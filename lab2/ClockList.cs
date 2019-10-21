@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace lab2.Storage
+namespace lab2
 {
     public static class cloclList
     {

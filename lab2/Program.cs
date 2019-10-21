@@ -1,216 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace lab2
 {
-    public class Clock
-    {
-        private string name;
-        private bool isPowerEnabled;
-        private bool isHalfDayEnabled;
-        private int[] currentTime = new int[2];
-        private bool isAlarmEnabled;
-        private int[] alarmTime = new int[2];
-
-
-        public Clock(string clockName)
-        {
-            name = clockName;
-            isPowerEnabled = true;
-            isHalfDayEnabled = false;
-            currentTime[0] = DateTime.Now.Hour;
-            currentTime[1] = DateTime.Now.Minute;
-            isAlarmEnabled = true;
-            alarmTime[0] = currentTime[0];
-            alarmTime[1] = currentTime[1] + 1;
-        }
-        
-        public Clock(string clockName, int hours, int minutes)
-        {
-            name = clockName;
-            isPowerEnabled = true;
-            isHalfDayEnabled = false;
-            currentTime[0] = hours;
-            currentTime[1] = minutes;
-            isAlarmEnabled = false;
-            
-        }
-        
-        public Clock(string clockName, int hours, int minutes, int alarmHours, int alarmMinutes)
-        {
-            name = clockName;
-            isPowerEnabled = true;
-            isHalfDayEnabled = false;
-            currentTime[0] = hours;
-            currentTime[1] = minutes;
-            isAlarmEnabled = true;
-            alarmTime[0] = alarmHours;
-            alarmTime[1] = alarmMinutes;
-
-        }
-        
-        public Clock(string clockName, int hours, int minutes, bool isAfternoon)
-        {
-            name = clockName;
-            isPowerEnabled = true;
-            isHalfDayEnabled = true;
-            currentTime[0] = hours;
-            currentTime[1] = minutes;
-            isAlarmEnabled = false;
-            setHalfTime(hours, minutes, isAfternoon);
-        }
-        
-        public Clock(string clockName, int hours, int minutes, bool isAfternoon, int alarmHours, int alarmMinutes, bool alarmIsAfternoon)
-        {
-            name = clockName;
-            isPowerEnabled = true;
-            isHalfDayEnabled = true;
-            currentTime[0] = hours;
-            currentTime[1] = minutes;
-            isAlarmEnabled = true;
-            setHalfTime(hours, minutes, isAfternoon);
-            setHalfAlarm(alarmHours, alarmMinutes, alarmIsAfternoon);
-        }
-
-        public string Name
-        {
-            get => name;
-        }
-
-        public bool IsHalfDayEnabled
-        {
-            get => isHalfDayEnabled;
-        }
-        public void setAlarm(bool isEnabled)
-        {
-            isAlarmEnabled = isEnabled;
-        }
-
-        public void statusInfo()
-        {
-            Console.WriteLine($"Name: {name};");
-            if (isPowerEnabled)
-            {
-                Console.WriteLine("Power: Enabled;");
-                if (isHalfDayEnabled)
-                {
-                    if (currentTime[0] > 12)
-                    {
-                        Console.WriteLine($"Current Time: {currentTime[0] - 12}:{currentTime[1]} PM");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Current Time: {currentTime[0]}:{currentTime[1]} AM");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine($"Current Time: {currentTime[0]}:{currentTime[1]}");
-                }
-
-                if (isAlarmEnabled)
-                {
-                    Console.WriteLine("Alarm: Eabled");
-                    if (isHalfDayEnabled)
-                    {
-                        if (currentTime[0] > 12)
-                        {
-                            Console.WriteLine($"Alarm Time: {alarmTime[0] - 12}:{alarmTime[1]} PM");
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Alarm Time: {alarmTime[0]}:{alarmTime[1]} AM");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Alarm Time: {alarmTime[0]}:{alarmTime[1]}");
-                    }
-                    if ((currentTime[0] == alarmTime[0]) && (currentTime[1] == alarmTime[1]))
-                    {
-                        Console.WriteLine("BEEP! BEEP! BEEP! BEEP! BEEEP!");
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("Alarm: Disabled;");
-            }
-        }
-
-        public void refreshTime()
-        {
-            currentTime[0] = DateTime.Now.Hour;
-            currentTime[1] = DateTime.Now.Minute;
-        }
-        
-        public void setPower(bool isEnabled)
-        {
-            if (isEnabled)
-            {
-                isPowerEnabled = isEnabled;
-            }
-            else
-            {
-                isAlarmEnabled = false;
-                currentTime[0] = 0;
-                currentTime[1] = 0;
-                alarmTime[0] = 0;
-                alarmTime[1] = 0;                
-                isPowerEnabled = isEnabled;
-                isHalfDayEnabled = false;
-            }
-        }
-
-        public void setDayMode(bool isEnabled)
-        {
-            isHalfDayEnabled = isEnabled;
-        }
-        
-        public void setFullTime(int hours, int minutes)
-        {
-            currentTime[0] = hours;
-            currentTime[1] = minutes;
-        }
-        
-        public void setHalfTime(int hours, int minutes, bool isAfternoon)
-        {
-            if (isAfternoon)
-            {
-                currentTime[0] = hours + 12;
-                currentTime[1] = minutes;
-            }
-            else
-            {
-                currentTime[0] = hours;
-                currentTime[1] = minutes;
-            }
-            
-        }
-        public void setFullAlarm(int hours, int minutes)
-        {
-            alarmTime[0] = hours;
-            alarmTime[1] = minutes;
-        }
-        
-        public void setHalfAlarm(int hours, int minutes, bool isAfternoon)
-        {
-            if (isAfternoon)
-            {
-                alarmTime[0] = hours + 12;
-                alarmTime[1] = minutes;
-            }
-            else
-            {
-                alarmTime[0] = hours;
-                alarmTime[1] = minutes;
-            }
-            
-        }
-    }
-    
     internal class Program
     {
-        public static void setHalfDayModeCase(Clock myClock) {
+        public static void setHalfDayModeCase(List<Clock> _ClocksList)
+        {
+            int clockIndex = enterIndex();
             Console.WriteLine("Enter:{0}" +
                               "0 - to cancel{0}" +
                               "1 - to set half day mode on{0}" +
@@ -221,10 +18,10 @@ namespace lab2
                 case 0:
                     break;
                 case 1:
-                    myClock.setDayMode(true);
+                    _ClocksList[clockIndex].setDayMode(true);
                     break;
                 case 2: 
-                    myClock.setDayMode(false);
+                    _ClocksList[clockIndex].setDayMode(false);
                     break;
                 default:
                     Console.WriteLine("You`ve entered wrong number");
@@ -232,28 +29,18 @@ namespace lab2
             }
         }
 
-        public static void setTimeCase(Clock myClock)
+        public static void setTimeCase(List<Clock> _ClocksList)
         {
-            if (myClock.IsHalfDayEnabled)
+            int clockIndex = enterIndex();
+            if (_ClocksList[clockIndex].IsHalfDayEnabled)
             {
                 Console.WriteLine("Enter hour");
                 int hour = Int32.Parse(Console.ReadLine());
                 Console.WriteLine("Enter minute");
                 int minute = Int32.Parse(Console.ReadLine());
                 Console.WriteLine("Enter 0 if am, 1 if pm");
-                int timeItemId = Int32.Parse(Console.ReadLine());
-                switch (timeItemId)
-                {
-                    case 0:
-                        myClock.setHalfTime(hour, minute, false);
-                        break;
-                    case 1:
-                        myClock.setHalfTime(hour, minute, true);
-                        break;
-                    default:
-                        Console.WriteLine("You`ve entered wrong number");
-                        break;
-                }
+                bool isEvening = parseDigitToBool(Console.ReadLine());
+                _ClocksList[clockIndex].setHalfTime(hour, minute, isEvening);
             }
             else
             {
@@ -262,12 +49,13 @@ namespace lab2
                 Console.WriteLine("Enter minute");
                 int minute = Int32.Parse(Console.ReadLine());
                             
-                myClock.setFullTime(hour,minute);   
+                _ClocksList[clockIndex].setFullTime(hour,minute);   
             }
         }
 
-        public static void setAlarmStatusCase(Clock myClock)
+        public static void setAlarmStatusCase(List<Clock> _ClocksList)
         {
+            int clockIndex = enterIndex();
             Console.WriteLine("Enter:{0}" +
                               "0 - to cancel{0}" +
                               "1 - to set alarm on{0}" +
@@ -278,10 +66,10 @@ namespace lab2
                 case 0:
                     break;
                 case 1:
-                    myClock.setAlarm(true);
+                    _ClocksList[clockIndex].setAlarm(true);
                     break;
                 case 2: 
-                    myClock.setAlarm(false);
+                    _ClocksList[clockIndex].setAlarm(false);
                     break;
                 default:
                     Console.WriteLine("You`ve entered wrong number");
@@ -289,18 +77,19 @@ namespace lab2
             }
         }
 
-        public static void setAlarmTimeCase(Clock myClock)
+        public static void setAlarmTimeCase(List<Clock> _ClocksList)
         {
-            if (myClock.IsHalfDayEnabled)
+            int clockIndex = enterIndex();
+            if (_ClocksList[clockIndex].IsHalfDayEnabled)
             {
                 Console.WriteLine("Enter hour");
                 int hour = Int32.Parse(Console.ReadLine());
                 Console.WriteLine("Enter minute");
                 int minute = Int32.Parse(Console.ReadLine());
                 Console.WriteLine("Enter 1 if am, 0 if pm");
-                bool isAfternoon = bool.Parse(Console.ReadLine());
+                bool isAfternoon = parseDigitToBool(Console.ReadLine());
 
-                myClock.setHalfAlarm(hour,minute, isAfternoon);
+                _ClocksList[clockIndex].setHalfAlarm(hour,minute, isAfternoon);
             }
             else
             {
@@ -309,12 +98,13 @@ namespace lab2
                 Console.WriteLine("Enter minute");
                 int minute = Int32.Parse(Console.ReadLine());
                             
-                myClock.setFullAlarm(hour,minute);   
+                _ClocksList[clockIndex].setFullAlarm(hour,minute);   
             }
         }
 
-        public static void setPowerStatusCase(Clock myClock)
+        public static void setPowerStatusCase(List<Clock> _ClocksList)
         {
+            int clockIndex = enterIndex();
             Console.WriteLine("Enter:{0}" +
                               "0 - to cancel{0}" +
                               "1 - to set power on{0}" +
@@ -325,19 +115,143 @@ namespace lab2
                 case 0:
                     break;
                 case 1:
-                    myClock.setPower(true);
+                    _ClocksList[clockIndex].setPower(true);
                     break;
                 case 2: 
-                    myClock.setPower(false);
+                    _ClocksList[clockIndex].setPower(false);
                     break;
                 default:
                     Console.WriteLine("You`ve entered wrong number");
                     break;
             }
         }
+
+        public static void seeClocklistCase(List<Clock> _ClocksList)
+        {
+            foreach (Clock tempClock in _ClocksList)
+            {
+                Console.WriteLine($"Clock name: {tempClock.Name}, Index of object: {_ClocksList.IndexOf(tempClock)}");
+            }
+        }
+
+        public static void addNewClock(List<Clock> _ClocksList)
+        {
+            Console.WriteLine("Enter:{0}" +
+                              "0 - to create clock with default properties;{0}" +
+                              "1 - to create clock with manual time setting {0}" +
+                              "2 - to create clock with manual time and alarm setting{0}" +
+                              "3 - to to create clock with manual time setting and 12-hour mode {0}" +
+                              "4 - to to create clock with manual time and alarm setting and 12-hour mode {0}" +
+                              "5 - to cancel", Environment.NewLine);
+            int newClockMenu = Int32.Parse(Console.ReadLine());
+            Console.WriteLine("Enter clock name");
+            string clockName = Console.ReadLine();
+            
+            switch (newClockMenu)
+            {
+                case 0:
+                    _ClocksList.Add(new Clock(clockName));
+                    break;
+                case 1:
+                    Console.WriteLine("Enter hour");
+                    int hoursCase1 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter minute");
+                    int minutesCase1 = Int32.Parse(Console.ReadLine());
+                    _ClocksList.Add(new Clock(clockName, hoursCase1, minutesCase1));
+                    break;
+                case 2:
+                    Console.WriteLine("Enter hour");
+                    int hoursCase2 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter minute");
+                    int minutesCase2 = Int32.Parse(Console.ReadLine());
+                    _ClocksList.Add(new Clock(clockName, hoursCase2, minutesCase2));
+                    Console.WriteLine("Enter alarm hour");
+                    int alarmHoursCase2 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter alarm minute");
+                    int alarmMinutesCase2 = Int32.Parse(Console.ReadLine());
+                    _ClocksList.Add(new Clock(clockName, hoursCase2, minutesCase2, alarmHoursCase2, alarmMinutesCase2));
+                    break;
+                case 3:
+                    Console.WriteLine("Enter hour");
+                    int hoursCase3 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter minute");
+                    int minutesCase3 = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter:{0}" +
+                                      "0 - am{0}" +
+                                      "1 - pm", Environment.NewLine);
+                    bool isEveningCase3 =  parseDigitToBool(Console.ReadLine());
+                    _ClocksList.Add(new Clock(clockName, hoursCase3, minutesCase3, isEveningCase3));
+                    break;
+                case 4:
+                    Console.WriteLine("Enter hour");
+                    int hoursCase4 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter minute");
+                    int minutesCase4 = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter:{0}" +
+                                      "0 - am{0}" +
+                                      "1 - pm", Environment.NewLine);
+                    bool isEveningCase4 = parseDigitToBool(Console.ReadLine());
+                    Console.WriteLine("Enter alarm hour");
+                    int alarmHoursCase4 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter alarm minute");
+                    int alarmMinutesCase4 = Int32.Parse(Console.ReadLine());
+                    Console.WriteLine("Enter:{0}" +
+                                      "0 - am{0}" +
+                                      "1 - pm", Environment.NewLine);
+                    bool alarmIsEveningCase4 =  parseDigitToBool(Console.ReadLine());
+                    _ClocksList.Add(new Clock(clockName, hoursCase4, minutesCase4, isEveningCase4,
+                        alarmHoursCase4, alarmMinutesCase4, alarmIsEveningCase4));
+                    break;
+                case 5:
+                    break;
+                default: 
+                    Console.WriteLine("You`ve entered wrong number");
+                    break;
+            }
+            
+        }
+
+        public static void deleteClockCase(List<Clock> _ClocksList)
+        {
+            int deleteIndex = enterIndex();
+            _ClocksList.RemoveAt(deleteIndex);
+        }
+
+        public static bool parseDigitToBool(string digit)
+        {
+            if (digit == "1")
+            {
+                return true;
+            }
+            else if (digit == "0")
+            {
+                return false;
+            }
+            else
+            {
+                throw new FormatException("The string is not a recognized as a valid boolean value.");
+            }
+        }
+
+        public static int enterIndex()
+        {
+            Console.WriteLine("Enter the choosen clock index");
+            return Int32.Parse(Console.ReadLine());
+        }
+
+        public static void seeClockStatus(List<Clock> _ClocksList)
+        {
+            int clockIndex = enterIndex();
+            _ClocksList[clockIndex].statusInfo();
+        }
+        
+        public static void refreshClockTime(List<Clock> _ClocksList)
+        {
+            int clockIndex = enterIndex();
+            _ClocksList[clockIndex].refreshTime();
+        }
         public static void Main(string[] args)
         {
-            Clock myClock = new Clock();
             bool condition = true;
             while (condition)
             {
@@ -358,34 +272,34 @@ namespace lab2
                 switch (item_id)
                 {
                     case 0:
-                        myClock.statusInfo();
+                        seeClocklistCase(cloclList._Clocks);
                         break;
                     case 1:
-                        myClock.statusInfo();
+                        addNewClock(cloclList._Clocks);
                         break;
                     case 2:
-                        myClock.statusInfo();
+                        deleteClockCase(cloclList._Clocks);
                         break;
                     case 3:
-                        myClock.statusInfo();
+                        seeClockStatus(cloclList._Clocks);
                         break;
                     case 4:
-                        myClock.refreshTime();
+                        refreshClockTime(cloclList._Clocks);
                         break;
                     case 5:
-                        setHalfDayModeCase(myClock);
+                        setHalfDayModeCase(cloclList._Clocks);
                         break;
                     case 6:
-                        setPowerStatusCase(myClock);
+                        setPowerStatusCase(cloclList._Clocks);
                         break;
                     case 7:
-                        setTimeCase(myClock);
+                        setTimeCase(cloclList._Clocks);
                         break;
                     case 8:
-                        setAlarmStatusCase(myClock);
+                        setAlarmStatusCase(cloclList._Clocks);
                         break;
                     case 9:
-                        setAlarmStatusCase(myClock);
+                        setAlarmStatusCase(cloclList._Clocks);
                         break;
                     case 10:
                         condition = false;
