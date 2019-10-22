@@ -215,6 +215,8 @@ namespace lab2
         {
             int deleteIndex = enterIndex();
             _ClocksList.RemoveAt(deleteIndex);
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         public static bool parseDigitToBool(string digit)
