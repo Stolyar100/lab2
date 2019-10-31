@@ -6,6 +6,8 @@ namespace lab2.Part2
         {
             
         }
+        
+        
 
     }
 }
