@@ -142,7 +142,8 @@ namespace lab2
                               "2 - to create clock with manual time and alarm setting{0}" +
                               "3 - to to create clock with manual time setting and 12-hour mode {0}" +
                               "4 - to to create clock with manual time and alarm setting and 12-hour mode {0}" +
-                              "5 - to cancel", Environment.NewLine);
+                              "5 - to to create clock with cloned values {0}" +
+                              "6 - to cancel", Environment.NewLine);
             int newClockMenu = Int32.Parse(Console.ReadLine());
             Console.WriteLine("Enter clock name");
             string clockName = Console.ReadLine();
@@ -203,6 +204,10 @@ namespace lab2
                         alarmHoursCase4, alarmMinutesCase4, alarmIsEveningCase4));
                     break;
                 case 5:
+                    int clonedClockIndex = enterIndex();
+                    _ClocksList.Add(new Clock(clockName, _ClocksList[clonedClockIndex]));
+                    break;
+                case 6:
                     break;
                 default: 
                     Console.WriteLine("You`ve entered wrong number");

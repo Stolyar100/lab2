@@ -71,15 +71,36 @@ namespace lab2
             setHalfAlarm(alarmHours, alarmMinutes, alarmIsAfternoon);
         }
 
+        public Clock(string clockName, Clock clonedClock)
+        {
+            name = clockName;
+            isPowerEnabled = clonedClock.IsPowerEnabled;
+            isHalfDayEnabled = clonedClock.IsHalfDayEnabled;
+            currentTime[0] = clonedClock.CurrentTime[0];
+            currentTime[1] = clonedClock.CurrentTime[1];
+            isAlarmEnabled = clonedClock.IsAlarmEnabled;
+            alarmTime[0] = clonedClock.AlarmTime[0];
+            alarmTime[1] = clonedClock.AlarmTime[1];
+        }
+
         public string Name
         {
             get => name;
         }
 
+        public bool IsPowerEnabled => isPowerEnabled;
+
         public bool IsHalfDayEnabled
         {
             get => isHalfDayEnabled;
         }
+
+        public int[] CurrentTime => currentTime;
+
+        public bool IsAlarmEnabled => isAlarmEnabled;
+
+        public int[] AlarmTime => alarmTime;
+
         public void setAlarm(bool isEnabled)
         {
             isAlarmEnabled = isEnabled;
