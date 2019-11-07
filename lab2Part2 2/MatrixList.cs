@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 namespace lab2.Part2
 {
-    public static class matrixlList
+    public static class MatrixlList
     {
-        public static List<Matrix> _Matrices = new List<Matrix>();
+        public static List<Matrix> Matrices = new List<Matrix>();
     }
 }

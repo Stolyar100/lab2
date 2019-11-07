@@ -13,7 +13,7 @@ namespace lab2.Part2
         public int Rows => rows;
         public int Columns => columns;
 
-        public double[,] Matrix1
+        public double[,] MatrixValue
         {
             get => matrix;
             set => matrix = value;
@@ -66,17 +66,13 @@ namespace lab2.Part2
                 {
                     for (int j = 0; j < matrix.GetLength(1); j++)
                     {
-                        if (matrix[i, j] > matrix[i, j + 1] && matrix[i, j] > matrix[i, j - 1] &&
-                            matrix[i, j] < matrix[i - 1, j] && matrix[i, j] < matrix[i + 1, j])
-                        {
-                            matrix[i, j] = value;
-                        }
+                        matrix[i, j] = value;
                     }
                 }   
             }
         }
         
-        public Matrix(int rowsAmount, int columnsAmount, double[,] clonedMatrix)
+        public Matrix(int rowsAmount, int columnsAmount, Matrix clonedMatrix)
         {
             matrix = new double[rowsAmount, columnsAmount];
             rows = rowsAmount;
@@ -87,19 +83,19 @@ namespace lab2.Part2
                 
                 for (int j = 0; j < matrix.GetLength(1); j++)
                 {
-                    if ((i > clonedMatrix.GetLength(0) - 1) && (j > clonedMatrix.GetLength(1) - 1))
+                    if ((i > clonedMatrix.MatrixValue.GetLength(0) - 1) && (j > clonedMatrix.MatrixValue.GetLength(1) - 1))
                     {
                         matrix[i, j] = 0;
                     }
                     else
                     {
-                        matrix[i, j] = clonedMatrix[i, j];
+                        matrix[i, j] = clonedMatrix.MatrixValue[i, j];
                     }
                 }
             }
         }
         
-        public Matrix(int rowsAmount, int columnsAmount, int subRowsAmount, int subColumsAmount)
+        public Matrix(int rowsAmount, int columnsAmount, int startRow, int startColumn, int endRow, int endColumn)
         {    
             Random r = new Random();
             int range = 99;
@@ -107,28 +103,21 @@ namespace lab2.Part2
             matrix = new double[rowsAmount, columnsAmount];
             rows = rowsAmount;
             columns = columnsAmount;
-            
-            for (int i = 0; i < subRowsAmount; i++)
+
+            for (int i = 0; i < rowsAmount; i++)
             {
-                for (int j = 0; j < subColumsAmount; j++)
+                for (int j = 0; j < columnsAmount; j++)
                 {
-                    matrix[i, j] = r.NextDouble()* range;
+                    matrix[i, j] = 0;
                 }
             }
             
-            for (int i = 0; i < rowsAmount; i++)
+            for (int i = startRow; i < endRow + 1; i++)
             {
                 
-                for (int j = 0; j < columnsAmount; j++)
+                for (int j = startColumn; j < endColumn + 1; j++)
                 {
-                    if ((i > subRowsAmount - 1) && (j > subColumsAmount - 1))
-                    {
-                        matrix[i, j] = 0;
-                    }
-                    else
-                    { 
-                        matrix[i, j] = r.NextDouble()* range;
-                    }
+                    matrix[i, j] = r.NextDouble()* range;
                 }
             }
         }
