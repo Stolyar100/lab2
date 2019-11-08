@@ -25,9 +25,9 @@ namespace lab2.Part2
             Console.WriteLine("Enter:{0}" +
                               "0 - to create matrix with manual size and random values;{0}" +
                               "1 - to create matrix with manual size and manual value;{0}" +
-                              "3 - to create matrix with cloning values from another matrix;{0}" +
-                              "4 - to create matrix with manual size and filing manual size;{0}" +
-                              "6 - to cancel", Environment.NewLine);
+                              "2 - to create matrix with cloning values from another matrix;{0}" +
+                              "3 - to create matrix with manual size and filing manual size;{0}" +
+                              "4 - to cancel", Environment.NewLine);
             int newClockMenu = Int32.Parse(Console.ReadLine());
             
             switch (newClockMenu)
@@ -44,14 +44,23 @@ namespace lab2.Part2
                     int rowsCase1 = Int32.Parse(Console.ReadLine()); 
                     Console.WriteLine("Enter the number of columns");
                     int columnsCase1 = Int32.Parse(Console.ReadLine());
-                    int clonedIndex = enterIndex();
-                    matrixList.Add(new Matrix(rowsCase1, columnsCase1, matrixList[clonedIndex]));
+                    Console.WriteLine("Enter the fill value");
+                    double fillValue = Double.Parse(Console.ReadLine());
+                    matrixList.Add(new Matrix(rowsCase1, columnsCase1, fillValue));
                     break;
                 case 2:
                     Console.WriteLine("Enter the number of rows");
                     int rowsCase2 = Int32.Parse(Console.ReadLine()); 
                     Console.WriteLine("Enter the number of columns");
                     int columnsCase2 = Int32.Parse(Console.ReadLine());
+                    int clonedIndex = enterIndex();
+                    matrixList.Add(new Matrix(rowsCase2, columnsCase2, matrixList[clonedIndex]));
+                    break;
+                case 3:
+                    Console.WriteLine("Enter the number of rows");
+                    int rowsCase3 = Int32.Parse(Console.ReadLine()); 
+                    Console.WriteLine("Enter the number of columns");
+                    int columnsCase3 = Int32.Parse(Console.ReadLine());
                     Console.WriteLine("Enter the start row's index of submatrix");
                     int startRow = Int32.Parse(Console.ReadLine()); 
                     Console.WriteLine("Enter the end row's index of submatrix");
@@ -60,9 +69,9 @@ namespace lab2.Part2
                     int startColumn = Int32.Parse(Console.ReadLine()); 
                     Console.WriteLine("Enter the end columns's index of submatrix");
                     int endColumn = Int32.Parse(Console.ReadLine());
-                    matrixList.Add(new Matrix(rowsCase2, columnsCase2, startRow, startColumn, endRow, endColumn));
+                    matrixList.Add(new Matrix(rowsCase3, columnsCase3, startRow, startColumn, endRow, endColumn));
                     break;
-                case 3:
+                case 4:
                     break;
                 default: 
                     Console.WriteLine("You`ve entered wrong number");
@@ -85,7 +94,7 @@ namespace lab2.Part2
             
             while (condition)
             {
-                Console.WriteLine("A congratulations! It`s sub menu, enter: {0}" +
+                Console.WriteLine("{0}A congratulations! It`s sub menu, enter: {0}" +
                                   "0 - to get value by coordinates;{0}" +
                                   "1 - to set value by coordinates;{0}" +
                                   "2 - to print matrix;{0}" +
@@ -117,7 +126,8 @@ namespace lab2.Part2
                             Console.Write(Environment.NewLine);
                             for (int j = 0; j < matrixList[choosenIndex].Columns; j++)
                             {
-                                Console.Write($"{matrixList[choosenIndex].MatrixValue[i,j]} ");
+                                Console.Write(String.Format("{0:F4} ",
+                                    matrixList[choosenIndex].MatrixValue[i,j]));
                             }
                         }
                         break;
@@ -147,16 +157,16 @@ namespace lab2.Part2
                 switch (item_id)
                 {
                     case 0:
-                        seeMatrixlistCase(MatrixList.Matricies);
+                        seeMatrixlistCase(MatrixList.Matrices);
                         break;
                     case 1:
-                        addNewMatrixCase(MatrixList.Matricies);
+                        addNewMatrixCase(MatrixList.Matrices);
                         break;
                     case 2:
-                        deleteMatrixCase(MatrixList.Matricies);
+                        deleteMatrixCase(MatrixList.Matrices);
                         break;
                     case 3:
-                        chooseMatrixCase(MatrixList.Matricies);
+                        chooseMatrixCase(MatrixList.Matrices);
                         break;
                     case 4:
                         condition = false;

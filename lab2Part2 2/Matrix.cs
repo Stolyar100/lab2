@@ -78,12 +78,11 @@ namespace lab2.Part2
             rows = rowsAmount;
             columns = columnsAmount;
             
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < rows; i++)
             {
-                
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < columns; j++)
                 {
-                    if ((i > clonedMatrix.MatrixValue.GetLength(0) - 1) && (j > clonedMatrix.MatrixValue.GetLength(1) - 1))
+                    if ((i > clonedMatrix.Rows - 1) || (j > clonedMatrix.Columns - 1))
                     {
                         matrix[i, j] = 0;
                     }
